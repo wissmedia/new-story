@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs') %>
+
+  <body>
+    <%- include('./partials/nav.ejs') %>
+      <%- include('./partials/add-btn.ejs') %>
+        <div class="container">
+          <h6>Dashboard</h6>
+          <h3>Welcome <%= name %>
+          </h3>
+          <p>Here are your stories</p>
+
+          <% if (stories.length> 0) { %>
+            <table class="striped">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% stories.forEach(story=> { %>
+                  <tr>
+                    <td><a href="/stories/<%= story._id %>">
+                        <%= story.title %>
+                      </a></td>
+                    <td>
+                      <%= moment(story.createAt).format('MMMM Do YYYY, h:mm:ss a') %>
+                    </td>
+                    <td><span class="dash-status">
+                        <%= story.status %>
+                      </span></td>
+                    <td>
+                      <a href="/stories/edit/<%= story._id %>" class="btn btn-float"><i class="fas fa-edit"></i></a>
+                      <form action="/stories/<%= story._id %>" method="POST" id="delete-form">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-float red">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  <% }) %>
+              </tbody>
+            </table>
+            <% } else { %>
+              <p>You have not created any stories</p>
+              <% } %>
+
+        </div>
+        <%- include('./partials/script.ejs') %>
+  </body>
+
+</html>
